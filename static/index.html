@@ -292,12 +292,11 @@
 
       function wsSetup() {
         var url = "ws://" + host + "/subscribe";
-        console.log(url)
         socket = new WebSocket(url);
         socket.onopen = function () {
           //XXX: TODO What are you going to do here?
           //send world
-          socket.send(JSON.stringify({"GET": "world"}));
+          socket.send(JSON.stringify("world"));
           debug("WebSocket Open");
         };
         socket.onerror = function (msg) {
@@ -308,9 +307,11 @@
             debug("WebSocket Recv:" + msg.data);
             //XXX: TODO What are you going to do here?
             // update world with data,and draw next frame
+            // console.log("--onmessage--", msg.data)
             var message = JSON.parse(msg.data); 
-            var entity = Object.keys(json_msg)[0];
-            var data = json_msg[entity];
+            var entity = Object.keys(message)[0];
+            var data = message[entity];
+            // console.log("---", entity, data, world)
             world[entity] = data;
             drawNextFrame();         
           } catch (e) {

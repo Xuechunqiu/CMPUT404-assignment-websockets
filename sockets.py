@@ -105,20 +105,16 @@ def read_ws(ws, client):
     try:
         while True:
             msg = ws.receive()
-            print("WS RECV: %s" % msg)
             if (msg is not None):
-                # packet = json.loads(msg)
-                # send_all_json(packet)
-                print('JSON loads msg: %s' % json.loads(msg))
-                if("GET" in json.loads(msg)):
-                    for entity, data in myWorld.space.items():
-                        ws.send(json.dumps({entity: data}))
-                else:
-                    packet = json.loads(msg)
+                packet = json.loads(msg)
+                # print(packet)
+                if packet != "world":
+                    # print("----onmessage----")
                     for entity, data in packet.items():
                         myWorld.set(entity, data)
-                        send_all_json(packet)
+                    send_all_json(packet)
             else:
+                print("Exit")
                 break
     except:
         '''Done'''
